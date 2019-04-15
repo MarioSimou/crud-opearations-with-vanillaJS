@@ -2,16 +2,16 @@ const sp = (() => ({
     // initialization function
     init: async function () {
         // Components
-        const ToDo = this.getTodoClass() // ToDo class
-        const Task = this.getTaskClass(); // CHTMLLiElement
-        const Root = this.getRootClass();
+        const ToDo = this.getTodoClass(), Task = this.getTaskClass() , Root = this.getRootClass() , AddTask = this.getAddTaskClass(); 
+        
+        // instances
         const root = new Root({ id: 'content' })
-        // initial tasks
         const tasks = ['Code', 'Eat', 'Sleep', 'Repeat'].map(v => new Task({ id: v.toLocaleLowerCase(), content: v }))
-        // todo list is initialized with some tasks
         const toDo = new ToDo({ id: 'todoList', tasks })
+        const addTask = new AddTask({ id : 'add-task' })
 
         // loads todo list into the root element
+        root.addElement('afterbegin' , addTask )
         root.addElement('beforeend' , toDo )
 
         // loads the root class to wrapper class
@@ -109,6 +109,20 @@ const sp = (() => ({
             // getter method that returns the content of a Task
             get textContent() {
                 return this._content
+            }
+        }
+    },
+    getAddTaskClass : function(){
+        const Root = this.getRootClass()
+
+        return class AddTask extends Root {
+            constructor({ id }){
+                super({ id })
+                this.e.insertAdjacentHTML('beforeend' , 
+                `<div class="add">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                `)
             }
         }
     }
