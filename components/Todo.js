@@ -1,6 +1,6 @@
-import { Root } from './Root.js'
+import Root from './Root.js'
 
-class Todo extends Root {
+export default class Todo extends Root {
     constructor({ id, tasks }) {
         super({ id })
         this._tasks = tasks
@@ -17,4 +17,3 @@ class Todo extends Root {
 }
 
 
-export { Todo }

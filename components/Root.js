@@ -1,4 +1,4 @@
-class Root {
+export default class Root {
     constructor({ id }) {
         this._id = id
         this.e = document.createElement('div')
@@ -19,5 +19,3 @@ class Root {
         return this.e
     }
 }
-
-export { Root }

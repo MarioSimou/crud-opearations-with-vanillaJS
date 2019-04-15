@@ -1,6 +1,6 @@
-import { Root } from './Root.js'
+import Root  from './Root.js'
 
-class Task extends Root {
+export default class Task extends Root {
     constructor({ id, content }) {
         super({ id })
         this._content = content
@@ -42,5 +42,3 @@ class Task extends Root {
         return this._content
     }
 }
-
-export { Task }

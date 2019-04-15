@@ -1,7 +1,7 @@
-import { Root } from './components/Root.js'
-import { Task } from './components/Task.js'
-import { Todo } from './components/Todo.js'
-import { AddTask } from './components/AddTask.js'
+import Root from './components/Root.js'
+import Task from './components/Task.js'
+import Todo from './components/Todo.js'
+import AddTask from './components/AddTask.js'
 
 {   
     const sp = (()=>({
