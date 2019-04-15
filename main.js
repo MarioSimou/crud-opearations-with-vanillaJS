@@ -1,137 +1,45 @@
-const sp = (() => ({
-    // initialization function
-    init: async function () {
-        // Components
-        const ToDo = this.getTodoClass(), Task = this.getTaskClass() , Root = this.getRootClass() , AddTask = this.getAddTaskClass(); 
-        
-        // instances
-        const root = new Root({ id: 'content' })
-        const tasks = ['Code', 'Eat', 'Sleep', 'Repeat'].map(v => new Task({ id: v.toLocaleLowerCase(), content: v }))
-        const toDo = new ToDo({ id: 'todoList', tasks })
-        const addTask = new AddTask({ id : 'add-task' })
+import { Root } from './components/Root.js'
+import { Task } from './components/Task.js'
+import { Todo } from './components/Todo.js'
+import { AddTask } from './components/AddTask.js'
 
-        // loads todo list into the root element
-        root.addElement('afterbegin' , addTask )
-        root.addElement('beforeend' , toDo )
+{   
+    const sp = (()=>({
+        addTaskCb : function( e ) {
+            e.preventDefault();
+            const form = this.closest('.form')
+            const v = form.querySelector('[id="taskbar"]').value
 
-        // loads the root class to wrapper class
-        document.querySelector('.wrapper').insertAdjacentElement('beforeend', root.render())
-
-
-    },
-    getRootClass: function () {
-        return class Root {
-            constructor({ id }) {
-                this._id = id
-                this.e = document.createElement('div')
-                this.e.setAttribute('id', this.id)
-                this.e.setAttribute('class' , this.id )
-            }
-            // getter of instance id
-            get id() {
-                return this._id
-            }
-
-            // method that renders a given element within the parent element
-            addElement(p, t) {
-                this.e.insertAdjacentElement(p, t.render())
-            }
-            // function that is shared between element to render itself
-            render() {
-                return this.e
+            switch( v ? true : false ){
+                case true:
+                    // add one more taks
+                        console.log(toDo)
+                        const t = new Task({  id : 'football' , content : 'football' })
+                        console.log( t )
+                        // removes existing form 
+                        form.remove()
+                    break;
+                case false:
+                window.alert('fill all the values')
             }
         }
-    },
-    // routine that creates the Todo component
-    getTodoClass: function () {
-        const Root = this.getRootClass()
+    }))()
 
-        class Todo extends Root {
-            constructor({ id, tasks }) {
-                super({ id })
-                this._tasks = tasks
+    // loads the components after the DOM loads
+    document.addEventListener('DOMContentLoaded', function (e) {
+        (() => {
+            // instances
+            const root = new Root({ id: 'content' })
+            const tasks = ['Code', 'Eat', 'Sleep', 'Repeat'].map(v => new Task({ id: v.toLocaleLowerCase(), content: v }))
+            const toDo = new Todo({ id: 'todoList', tasks })
+            const addTask = new AddTask({ id: 'add-task' , cb : sp.addTaskCb })
 
-                // populates the todo list with the initial tasks
-                for (let t of tasks) {
-                    this.addElement('beforeend', t )
-                }
-            }
+            // loads todo list into the root element
+            root.addElement('afterbegin', addTask)
+            root.addElement('beforeend', toDo)
 
-            get tasks() {
-                return this._tasks
-            }
-        }
-
-        return Todo
-    },
-    getTaskClass: function () {
-        const Root = this.getRootClass()
-
-        return class Task extends Root {
-            constructor({ id, content }) {
-                super({ id })
-                this._content = content
-                this.e.setAttribute( 'class' , 'task')
-                this.init()
-            }
-
-            init() {
-                this.e.insertAdjacentHTML('afterbegin', `
-                                    <div class="header">
-                                        <div class="close-icon">
-                                        <i class="far fa-times-circle"></i>
-                                        </div>
-                                    </div>
-                                    <div class="content">
-                                        <div>${ this.textContent}</div>
-                                    </div>
-                                    <div class="footer"></div>
-                                `)
-
-
-                // assign event listeners
-                this.e.addEventListener('click', function (e) {
-                    const { target } = e
-
-                    switch (target.className) {
-                        case 'task':
-                            break;
-                        case 'far fa-times-circle':
-                            this.remove()
-                            break;
-                        default:
-                            break;
-                    }
-                })
-
-            }
-
-            // getter method that returns the content of a Task
-            get textContent() {
-                return this._content
-            }
-        }
-    },
-    getAddTaskClass : function(){
-        const Root = this.getRootClass()
-
-        return class AddTask extends Root {
-            constructor({ id }){
-                super({ id })
-                this.e.insertAdjacentHTML('beforeend' , 
-                `<div class="add">
-                    <i class="fas fa-plus-circle"></i>
-                </div>
-                `)
-            }
-        }
-    }
-
-}))()
-
-
-
-// loads the components after the DOM loads
-document.addEventListener('DOMContentLoaded', function (e) {
-    sp.init()
-})
+            // loads the root class to wrapper class
+            document.querySelector('.wrapper').insertAdjacentElement('beforeend', root.render())
+        })()
+    })
+}
