@@ -4,28 +4,41 @@ const sp = (() => ({
         // Components
         const ToDo = this.getTodoClass() // ToDo class
         const Task = this.getTaskClass(); // CHTMLLiElement
-        const tasks = ['Code', 'Eat', 'Sleep', 'Repeat'].map( v => new Task({ id : v.toLocaleLowerCase()  , content: v })) 
+        const Root = this.getRootClass();
+        const root = new Root({ id: 'content' })
+        // initial tasks
+        const tasks = ['Code', 'Eat', 'Sleep', 'Repeat'].map(v => new Task({ id: v.toLocaleLowerCase(), content: v }))
+        // todo list is initialized with some tasks
         const toDo = new ToDo({ id: 'todoList', tasks })
 
-        toDo.render()
-        toDo.addElement( 'afterbegin' , new Task({ id : 'gaming' , content : 'Gaming' }) )
-        
-        
+        // loads todo list into the root element
+        root.addElement('beforeend' , toDo )
+
+        // loads the root class to wrapper class
+        document.querySelector('.wrapper').insertAdjacentElement('beforeend', root.render())
+
+
     },
     getRootClass: function () {
         return class Root {
             constructor({ id }) {
                 this._id = id
-                this.ref = document.querySelector(`[id="${this.id}"]`)
+                this.e = document.createElement('div')
+                this.e.setAttribute('id', this.id)
+                this.e.setAttribute('class' , this.id )
             }
             // getter of instance id
-            get id(){
-                return this._id  
+            get id() {
+                return this._id
             }
 
             // method that renders a given element within the parent element
-            addElement( p , t ){
-                this.ref.insertAdjacentElement(  p , t.render() )
+            addElement(p, t) {
+                this.e.insertAdjacentElement(p, t.render())
+            }
+            // function that is shared between element to render itself
+            render() {
+                return this.e
             }
         }
     },
@@ -37,61 +50,50 @@ const sp = (() => ({
             constructor({ id, tasks }) {
                 super({ id })
                 this._tasks = tasks
+
+                // populates the todo list with the initial tasks
+                for (let t of tasks) {
+                    this.addElement('beforeend', t )
+                }
             }
 
-            get tasks(){
+            get tasks() {
                 return this._tasks
             }
-
-            // rendering functionality specific to Todo class
-            render() {
-                // append the tasks
-                for(let t of this.tasks){
-                    this.ref.insertAdjacentElement( 'beforeend' , t.render() )
-                }
-             }
         }
 
         return Todo
     },
-    getTaskClass: function(){
+    getTaskClass: function () {
         const Root = this.getRootClass()
 
-        class Task extends Root {
-            constructor( { id , content } ){
-                super ( { id } )
+        return class Task extends Root {
+            constructor({ id, content }) {
+                super({ id })
                 this._content = content
+                this.e.setAttribute( 'class' , 'task')
+                this.init()
             }
 
-            // getter method that returns the content of a Task
-            get textContent(){
-                return this._content
-            }
-
-            // rendering functionality specific to Task class
-            render(){
-                // task element
-                const task = document.createElement('div')
-                task.setAttribute('id' , this.id )
-                task.classList.add('task')
-                task.insertAdjacentHTML('afterbegin' , `
-                    <div class="header">
-                        <div class="close-icon">
-                        <i class="far fa-times-circle"></i>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <div>${ this.textContent }</div>
-                    </div>
-                    <div class="footer"></div>
-                `)
+            init() {
+                this.e.insertAdjacentHTML('afterbegin', `
+                                    <div class="header">
+                                        <div class="close-icon">
+                                        <i class="far fa-times-circle"></i>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <div>${ this.textContent}</div>
+                                    </div>
+                                    <div class="footer"></div>
+                                `)
 
 
                 // assign event listeners
-                task.addEventListener( 'click' , function( e ){
+                this.e.addEventListener('click', function (e) {
                     const { target } = e
 
-                    switch( target.className ){
+                    switch (target.className) {
                         case 'task':
                             break;
                         case 'far fa-times-circle':
@@ -102,15 +104,15 @@ const sp = (() => ({
                     }
                 })
 
-                return task
+            }
+
+            // getter method that returns the content of a Task
+            get textContent() {
+                return this._content
             }
         }
+    }
 
-        // removes propert ref
-        delete Task.prototype.ref
-
-        return Task
-    },
 }))()
 
 

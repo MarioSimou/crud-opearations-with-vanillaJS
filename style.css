@@ -39,7 +39,6 @@ p {
 }
 
 .wrapper > .content {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,6 +46,24 @@ p {
     width: 100%;
     
 }
+.wrapper > .content > .add-task {
+    width: 100%;
+    background: rgba(245,245,245 , 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.wrapper > .content > .add-task > .add {
+    max-width: 1000px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 20px;
+}
+
 .wrapper > .content >  #todoList {
     max-width: 1000px;
     width: 100%;
@@ -82,6 +99,10 @@ p {
     float: right;
 }
 
+.fa-plus-circle:hover,
 .fa-times-circle:hover {
     opacity: 0.6;
+}
+.fa-plus-circle {
+    font-size: 26px;
 }
