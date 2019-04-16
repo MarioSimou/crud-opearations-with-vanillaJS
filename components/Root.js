@@ -1,9 +1,9 @@
 export default class Root {
-    constructor({ id }) {
+    constructor({ id , cClasses }) {
         this._id = id
         this.e = document.createElement('div')
         this.e.setAttribute('id', this.id)
-        this.e.setAttribute('class' , this.id )
+        this.e.setAttribute('class' , `${ cClasses }  ${ id }` )
     }
     // getter of instance id
     get id() {

@@ -4,7 +4,7 @@ export default class Task extends Root {
     constructor({ id, content }) {
         super({ id })
         this._content = content
-        this.e.setAttribute( 'class' , 'task')
+        this.e.classList.add('task')
         this.init()
     }
 
