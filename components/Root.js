@@ -3,7 +3,7 @@ export default class Root {
         this._id = id
         this.e = document.createElement('div')
         this.e.setAttribute('id', this.id)
-        this.e.setAttribute('class' , `${ cClasses }  ${ id }` )
+        if(cClasses) this.e.setAttribute('class' , `${ cClasses }  ${ id }` )
     }
     // getter of instance id
     get id() {

@@ -32,6 +32,15 @@ body {
     font-size: 23px;
 }
 
+.wrapper > .content {
+    background-image: url('./img/todo.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
 .wrapper > .content > .add-task {
     width: 100%;
     background: rgba(245,245,245 , 1);
@@ -49,7 +58,7 @@ body {
     height: 100%;
     display: grid;
     grid-auto-flow: row;
-    grid-template-rows: repeat( auto-fill , minmax( 60px,  80px ) );
+    grid-template-rows: repeat( auto-fill , minmax( 60px,  90px ) );
     grid-gap: 6px;
 }
 
@@ -75,25 +84,39 @@ body {
     margin: 0 0 15px 20px;
     font-size: 20px;
     padding: 8px 6px;
+    background: transparent;
 }
 #taskbar:focus {
     border-bottom: 3px solid #cea135; 
 }
 #taskbar:focus::-webkit-input-placeholder {
     opacity: 0;
+    background: transparent;
 }
 
 #taskbar::-webkit-input-placeholder {
     color: #11122b;
     letter-spacing: 2px;
     font-size: 20px;
+    background: transparent;
 }
 
+#edit-task { 
+    outline: none;
+    border: none;
+    width: 100%;
+    background: transparent;
+    font-weight: 600;
+}
+
+.fa-pencil-alt,
 .fa-times-circle {
     font-size: 20px;
-    float: right;
 }
-
+.fa-pencil-alt {
+    margin-top: 10px;
+}
+.fa-pencil-alt:hover,
 .fa-plus-circle:hover,
 .fa-times-circle:hover {
     opacity: 0.6;
